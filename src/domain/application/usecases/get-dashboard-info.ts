@@ -34,11 +34,14 @@ export class GetDashboardInfoUseCase {
             transactionsByCategory.push(...transasctioByCategoryDataWithCategoryName)
         }
 
-        const totalBalance = accounts.reduce((acc, account) => acc + account.balance, 0)
-        const totalIncome = transactionsByAccount.filter(transaction => transaction.type === 'income').reduce((acc, transaction) => acc + transaction.amount, 0)
-        const totalExpense = transactionsByCategory.filter(transaction => transaction.type === 'expense').reduce((acc, transaction) => acc + transaction.amount, 0)
+        const sortedTransactionsByAccount = transactionsByAccount.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+        const sortedTransactionsByCategory = transactionsByCategory.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
 
-        return right({  accounts, transactionsByAccount: [...transactionsByAccount], transactionsByCategory: [...transactionsByCategory], totalBalance, totalIncome, totalExpense })
+        const totalBalance = accounts.reduce((acc, account) => acc + account.balance, 0)
+        const totalIncome = sortedTransactionsByAccount.filter(transaction => transaction.type === 'income').reduce((acc, transaction) => acc + transaction.amount, 0)
+        const totalExpense = sortedTransactionsByAccount.filter(transaction => transaction.type === 'expense').reduce((acc, transaction) => acc + transaction.amount, 0)
+
+        return right({  accounts, transactionsByAccount: [...sortedTransactionsByAccount], transactionsByCategory: [...sortedTransactionsByCategory], totalBalance, totalIncome, totalExpense })
     }
 }
 
