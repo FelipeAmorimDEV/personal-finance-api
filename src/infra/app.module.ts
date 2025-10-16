@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common'
 import { HttpModule } from './http/http.module';
+import { DatabaseModule } from './database/database.module';
 import { ConfigModule } from '@nestjs/config';
 import { envSchema } from './env';
 
@@ -7,6 +8,6 @@ import { envSchema } from './env';
   imports: [ConfigModule.forRoot({
     validate: env => envSchema.parse(env),
     isGlobal: true,
-  }), HttpModule],
+  }), HttpModule, DatabaseModule],
 })
 export class AppModule {}

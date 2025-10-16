@@ -19,3 +19,60 @@ Content-Type: application/json
   "email": "felipe4@gmail.com",
   "password": "123456"
 }
+
+
+###
+
+# @name create_category
+POST {{baseUrl}}/categories
+Content-Type: application/json
+
+{
+  "name": "Food",
+  "description": "Food category",
+  "userId": "a92d1ffa-ff5a-48ad-9f0f-f7ac191aca9a",
+  "color": "#FF6B6B",
+  "icon": "🍔"
+}
+
+###
+
+# @name create_transaction_account
+POST {{baseUrl}}/transaction-account
+Content-Type: application/json
+
+{
+  "name": "Bradesco",
+  "balance": 1000,
+  "userId": "a92d1ffa-ff5a-48ad-9f0f-f7ac191aca9a",
+  "color": "#4ECDC4",
+  "icon": "🏦"
+}
+
+###
+
+# @name create_transaction
+POST {{baseUrl}}/transactions
+Content-Type: application/json
+
+{
+  "amount": 70,
+  "accountId": "77b78a0e-70bb-4afd-a710-efdaf4c66fa1",
+  "categoryId": "ef22466d-dfda-49f5-a6e4-4d5c3b590e9b",
+  "date": "2025-10-13",
+  "type": "expense",
+  "description": "IFood"
+}
+
+###
+
+# @name get_dashboard_info
+GET {{baseUrl}}/dashboard?userId=a92d1ffa-ff5a-48ad-9f0f-f7ac191aca9a
+Content-Type: application/json
+
+###
+
+# @name list_categories
+GET {{baseUrl}}/categories
+Content-Type: application/json
+
