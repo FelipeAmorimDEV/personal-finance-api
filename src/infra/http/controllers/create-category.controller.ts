@@ -6,7 +6,7 @@ import { z } from "zod";
 
 const createCategoryBodySchema = z.object({
     name: z.string(),
-    userId: z.string().default("a92d1ffa-ff5a-48ad-9f0f-f7ac191aca9a"),
+    userId: z.string().default("b23a7adf-e397-4dfe-9d58-51921c65a68a"),
     description: z.string().optional().default(""),
     color: z.string().optional().default("#fff"),
     icon: z.string().optional().default("0")
