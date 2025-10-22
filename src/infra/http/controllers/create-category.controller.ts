@@ -2,11 +2,12 @@ import { BadRequestException, Body,  Controller,  HttpCode, Post, UsePipes } fro
 import { ZodValidationPipe } from "../pipes/zod-validation-pipe";
 import { CreateCategoryRecipeUseCase } from "@/domain/application/usecases/create-category";
 import { z } from "zod";
+import { CurrentUser } from "@/infra/auth/current-user-decorator";
+import { UserPayload } from "@/infra/auth/jwt.strategy";
 
 
 const createCategoryBodySchema = z.object({
     name: z.string(),
-    userId: z.string().default("b23a7adf-e397-4dfe-9d58-51921c65a68a"),
     description: z.string().optional().default(""),
     color: z.string().optional().default("#fff"),
     icon: z.string().optional().default("0")
@@ -21,8 +22,9 @@ export class CreateCategoryController {
     @Post()
     @HttpCode(201)
     @UsePipes(new ZodValidationPipe(createCategoryBodySchema))
-    async handle(@Body() body: CreateCategoryBodySchema) {
-        const { name, description, userId, color, icon } = body
+    async handle(@Body() body: CreateCategoryBodySchema, @CurrentUser() user: UserPayload) {
+        const { name, description, color, icon } = body
+        const userId = user.sub
 
         const result = await this.createCategoryRecipeUseCase.execute({ name, description, userId, color, icon })
 

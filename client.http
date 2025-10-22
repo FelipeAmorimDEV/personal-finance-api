@@ -1,5 +1,9 @@
 @baseUrl = http://localhost:3333
-# @name create_account
+# @baseUrl = https://personal-finance-api-t2j1.onrender.com
+
+### AUTENTICAÇÃO ###
+
+# @name register
 POST {{baseUrl}}/accounts
 Content-Type: application/json
 
@@ -16,16 +20,32 @@ POST {{baseUrl}}/sessions
 Content-Type: application/json
 
 {
-  "email": "felipe4@gmail.com",
+  "email": "felipe@gmail.com",
   "password": "123456"
 }
 
+###
+
+# Obter perfil do usuário autenticado
+# @name get_profile
+GET {{baseUrl}}/me
+Authorization: Bearer {{authenticate.response.body.access_token}}
 
 ###
+
+# DEBUG: Verificar se o token está válido
+# @name debug_token
+GET {{baseUrl}}/debug/token
+Authorization: Bearer {{authenticate.response.body.access_token}}
+
+###
+
+### CATEGORIAS (PROTEGIDAS) ###
 
 # @name create_category
 POST {{baseUrl}}/categories
 Content-Type: application/json
+Authorization: Bearer {{authenticate.response.body.access_token}}
 
 {
   "name": "Food",
@@ -37,9 +57,12 @@ Content-Type: application/json
 
 ###
 
+### CONTAS DE TRANSAÇÃO (PROTEGIDAS) ###
+
 # @name create_transaction_account
 POST {{baseUrl}}/transaction-account
 Content-Type: application/json
+Authorization: Bearer {{authenticate.response.body.access_token}}
 
 {
   "name": "Bradesco",
@@ -51,9 +74,12 @@ Content-Type: application/json
 
 ###
 
+### TRANSAÇÕES (PROTEGIDAS) ###
+
 # @name create_transaction
 POST {{baseUrl}}/transactions
 Content-Type: application/json
+Authorization: Bearer {{authenticate.response.body.access_token}}
 
 {
   "amount": 70,
@@ -66,13 +92,44 @@ Content-Type: application/json
 
 ###
 
+# @name list_transactions
+# Listar todas as transações do usuário autenticado
+GET {{baseUrl}}/transactions
+Authorization: Bearer {{authenticate.response.body.access_token}}
+
+###
+
+# @name list_transactions_filtered
+# Listar transações com filtros (mês, ano, tipo, categoria, conta)
+GET {{baseUrl}}/transactions?month=10&year=2025&type=expense
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyNmU4N2FlNi1iZTZhLTRiYmItOTliNS0xMDcxMTczYmI0NGIiLCJpYXQiOjE3NjExMDcyMDYsImV4cCI6MTc2MTEwNzIxM30.oZmTwRuj-AO0NDKvdMuDze5XSHY498e8ZI0joFBmUKA
+
+###
+
+# @name list_transactions_by_category
+# Listar transações por categoria
+GET {{baseUrl}}/transactions?categoryId=ef22466d-dfda-49f5-a6e4-4d5c3b590e9b
+Authorization: Bearer {{authenticate.response.body.access_token}}
+
+###
+
+# @name list_transactions_by_account
+# Listar transações por conta
+GET {{baseUrl}}/transactions?accountId=77b78a0e-70bb-4afd-a710-efdaf4c66fa1
+Authorization: Bearer {{authenticate.response.body.access_token}}
+
+###
+
+### DASHBOARD (PROTEGIDO) ###
+
 # @name get_dashboard_info
 GET {{baseUrl}}/dashboard?userId=a92d1ffa-ff5a-48ad-9f0f-f7ac191aca9a
 Content-Type: application/json
+Authorization: Bearer {{authenticate.response.body.access_token}}
 
 ###
 
 # @name list_categories
 GET {{baseUrl}}/categories
 Content-Type: application/json
-
+Authorization: Bearer {{authenticate.response.body.access_token}}

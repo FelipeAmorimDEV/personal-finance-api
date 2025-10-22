@@ -41,7 +41,7 @@ export class GetDashboardInfoUseCase {
         const totalIncome = sortedTransactionsByAccount.filter(transaction => transaction.type === 'income').reduce((acc, transaction) => acc + transaction.amount, 0)
         const totalExpense = sortedTransactionsByAccount.filter(transaction => transaction.type === 'expense').reduce((acc, transaction) => acc + transaction.amount, 0)
 
-        return right({  accounts, transactionsByAccount: [...sortedTransactionsByAccount], transactionsByCategory: [...sortedTransactionsByCategory], totalBalance, totalIncome, totalExpense })
+        return right({  accounts, transactionsByAccount: sortedTransactionsByAccount.slice(0,5), transactionsByCategory: [...sortedTransactionsByCategory], totalBalance, totalIncome, totalExpense })
     }
 }
 

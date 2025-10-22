@@ -8,12 +8,17 @@ type ListCategoriesRecipeUseCaseResponse = Either<
   { categories: CategoryRecipe[] }
 >
 
+type ListCategoriesRecipeUseCaseRequest = {
+  userId: string
+}
+
 @Injectable()
 export class ListCategoriesRecipeUseCase {
   constructor(private categoryRepository: CategoriesRecipeRepository) {}
 
-  async execute(): Promise<ListCategoriesRecipeUseCaseResponse> {
-    const categories = await this.categoryRepository.findAll()
+  async execute(request: ListCategoriesRecipeUseCaseRequest): Promise<ListCategoriesRecipeUseCaseResponse> {
+    const { userId } = request
+    const categories = await this.categoryRepository.findAllByUserId(userId)
 
     return right({ categories })
   }

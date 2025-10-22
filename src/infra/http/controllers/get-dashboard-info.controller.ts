@@ -3,21 +3,21 @@ import { BadRequestException, Controller, Get, Query } from "@nestjs/common"
 import { UsePipes } from "@nestjs/common"
 import { ZodValidationPipe } from "../pipes/zod-validation-pipe"
 import { z } from "zod"
+import { CurrentUser } from "@/infra/auth/current-user-decorator";
+import { UserPayload } from "@/infra/auth/jwt.strategy";
 
-const getDashboardInfoQuerySchema = z.object({
-    userId: z.string()
-})
 
-type GetDashboardInfoQuerySchema = z.infer<typeof getDashboardInfoQuerySchema>
+
+
 
 @Controller('/dashboard')
 export class GetDashboardInfoController {
     constructor(private getDashboardInfoUseCase: GetDashboardInfoUseCase) { }
 
     @Get()
-    @UsePipes(new ZodValidationPipe(getDashboardInfoQuerySchema))
-    async handle(@Query() query: GetDashboardInfoQuerySchema) {
-        const { userId } = query
+  
+    async handle(@CurrentUser() user: UserPayload) {
+        const userId = user.sub
 
         const result = await this.getDashboardInfoUseCase.execute({ userId })
         

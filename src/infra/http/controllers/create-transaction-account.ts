@@ -4,12 +4,13 @@ import { BadRequestException, Controller, HttpCode, Post, UsePipes } from "@nest
 import { Body } from "@nestjs/common";
 import { z } from "zod";
 import { ZodValidationPipe } from "../pipes/zod-validation-pipe";
+import { CurrentUser } from "@/infra/auth/current-user-decorator";
+import { UserPayload } from "@/infra/auth/jwt.strategy";
 
 
 const createAccountBodySchema = z.object({
     name: z.string(),
     balance: z.number(),
-    userId: z.string().optional().default("b23a7adf-e397-4dfe-9d58-51921c65a68a"),
     color: z.string().optional().default("#fff"),
     icon: z.string().optional().default("0")
 })
@@ -23,8 +24,9 @@ export class CreateTransactionAccountController {
     @Post()
     @HttpCode(201)
     @UsePipes(new ZodValidationPipe(createAccountBodySchema))
-    async handle(@Body() body: CreateAccountBodySchema) {
-        const { name, balance, userId, color, icon } = body
+    async handle(@Body() body: CreateAccountBodySchema, @CurrentUser() user: UserPayload) {
+        const { name, balance, color, icon } = body
+        const userId = user.sub
 
         const result = await this.createAccountUseCase.execute({ name, balance, userId, color, icon })
 
