@@ -1,5 +1,4 @@
 import { Module } from "@nestjs/common";
-import { CreateAccountController } from "./controllers/create-account.controller";
 import { DatabaseModule } from "../database/database.module";
 import { CreateCategoryController } from "./controllers/create-category.controller";
 import { CreateCategoryRecipeUseCase } from "@/domain/application/usecases/create-category";
@@ -26,7 +25,6 @@ import { HealthController } from "./controllers/health.controller";
 @Module({
   imports: [DatabaseModule, AuthModule, CryptographyModule],
   controllers: [
-    CreateAccountController, 
     CreateCategoryController, 
     CreateTransactionAccountController,
     CreateTransactionController,

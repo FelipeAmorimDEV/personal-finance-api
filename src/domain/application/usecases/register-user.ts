@@ -2,6 +2,7 @@ import { Either, left, right } from "@/core/either";
 import { UsersRepository } from "../repositories/users-repository";
 import { HashGenerator } from "../repositories/hash-generator";
 import { User } from "@/domain/enterprise/entities/user";
+import { Injectable } from "@nestjs/common";
 
 interface RegisterUserUseCaseRequest {
   name: string;
@@ -16,12 +17,14 @@ type RegisterUserUseCaseResponse = Either<
   }
 >;
 
+
 export class UserAlreadyExistsError extends Error {
   constructor(identifier: string) {
     super(`User "${identifier}" already exists`);
   }
 }
 
+@Injectable()   
 export class RegisterUserUseCase {
   constructor(
     private usersRepository: UsersRepository,
