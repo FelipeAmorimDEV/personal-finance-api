@@ -23,8 +23,7 @@ export class CreateTransactionController {
 
     @Post()
     @HttpCode(201)
-    @UsePipes(new ZodValidationPipe(createTransactionBodySchema))
-    async handle(@Body() body: CreateTransactionBodySchema) {
+    async handle(@Body(new ZodValidationPipe(createTransactionBodySchema)) body: CreateTransactionBodySchema) {
 
         const { amount, type, description, date, accountId, categoryId } = body
 

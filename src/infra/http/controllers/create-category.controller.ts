@@ -1,4 +1,4 @@
-import { BadRequestException, Body,  Controller,  HttpCode, Post, UsePipes } from "@nestjs/common";
+import { BadRequestException, Body, Controller, HttpCode, Post, UsePipes, Logger } from "@nestjs/common";
 import { ZodValidationPipe } from "../pipes/zod-validation-pipe";
 import { CreateCategoryRecipeUseCase } from "@/domain/application/usecases/create-category";
 import { z } from "zod";
@@ -17,12 +17,16 @@ type CreateCategoryBodySchema = z.infer<typeof createCategoryBodySchema>
 
 @Controller('categories')
 export class CreateCategoryController {
+    private readonly logger = new Logger(CreateCategoryController.name);
+
     constructor(private createCategoryRecipeUseCase: CreateCategoryRecipeUseCase){}
 
     @Post()
     @HttpCode(201)
-    @UsePipes(new ZodValidationPipe(createCategoryBodySchema))
-    async handle(@Body() body: CreateCategoryBodySchema, @CurrentUser() user: UserPayload) {
+    async handle(@Body(new ZodValidationPipe(createCategoryBodySchema)) body: CreateCategoryBodySchema, @CurrentUser() user: UserPayload) {
+        this.logger.debug(`Received body: ${JSON.stringify(body)}`);
+        this.logger.debug(`User: ${user.sub}`);
+
         const { name, description, color, icon } = body
         const userId = user.sub
 

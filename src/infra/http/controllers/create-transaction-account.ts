@@ -23,8 +23,7 @@ export class CreateTransactionAccountController {
 
     @Post()
     @HttpCode(201)
-    @UsePipes(new ZodValidationPipe(createAccountBodySchema))
-    async handle(@Body() body: CreateAccountBodySchema, @CurrentUser() user: UserPayload) {
+    async handle(@Body(new ZodValidationPipe(createAccountBodySchema)) body: CreateAccountBodySchema, @CurrentUser() user: UserPayload) {
         const { name, balance, color, icon } = body
         const userId = user.sub
 
