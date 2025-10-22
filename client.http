@@ -1,5 +1,12 @@
-@baseUrl = http://localhost:3333
-# @baseUrl = https://personal-finance-api-t2j1.onrender.com
+@baseUrl = https://personal-finance-api-t2j1.onrender.com
+# @baseUrl = http://localhost:3333
+
+### HEALTH CHECK (PÚBLICO) ###
+
+# @name health
+GET {{baseUrl}}/health
+
+###
 
 ### AUTENTICAÇÃO ###
 

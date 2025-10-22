@@ -21,6 +21,7 @@ import { RegisterUserUseCase } from "@/domain/application/usecases/register-user
 import { ListTransactionsController } from "./controllers/list-transactions.controller";
 import { ListTransactionsUseCase } from "@/domain/application/usecases/list-transactions";
 import { DebugTokenController } from "./controllers/debug-token.controller";
+import { HealthController } from "./controllers/health.controller";
 
 @Module({
   imports: [DatabaseModule, AuthModule, CryptographyModule],
@@ -35,7 +36,8 @@ import { DebugTokenController } from "./controllers/debug-token.controller";
     RegisterController,
     GetProfileController,
     ListTransactionsController,
-    DebugTokenController
+    DebugTokenController,
+    HealthController
   ],
   providers: [
     CreateCategoryRecipeUseCase, 
